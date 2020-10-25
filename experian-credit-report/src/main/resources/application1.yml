@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+        client:
+         registration:
+           clientId: caDU79XJdVLveGzTA8cdo9ZOlDGFJGsO
+           clientSecret: 8siWklAMfxxuj3yA
+#           accessTokenUri: https://sandbox-us-api.experian.com/oauth2/v1/token
+           scope: custom_mod
+         provider:            authorizationUri: https://sandbox-us-api.experian.com/oauth2/v1/authorize
+            tokenUri: https://sandbox-us-api.experian.com/oauth2/v1/token
+            jwkSetUri: https://sandbox-us-api.experian.com/oauth2/v1/keys
+            
