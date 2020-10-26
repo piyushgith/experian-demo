@@ -25,14 +25,13 @@ public class ExperianCreditReportController {
 		return "Hi There!!";
 	}
 
-	@GetMapping("/experian/oauth2")
+	@PostMapping("/experian/oauth2")
 	public ResponseEntity<OAuth2Token> getAuthenticationToken(@RequestBody User user) {
 		return new ResponseEntity<>(experianCreditReportServiceImpl.getOath2Token(user), HttpStatus.OK);
 	}
 
 	@PostMapping("/experian/creditreport")
-	public ResponseEntity<ExperianCreditReportResponseDTO> getUserCreditReport(
-			@RequestBody ExperianCreditReportRequestDTO experianRequestDTO) {
+	public ResponseEntity<ExperianCreditReportResponseDTO> getUserCreditReport(@RequestBody ExperianCreditReportRequestDTO experianRequestDTO) {
 		return new ResponseEntity<>(experianCreditReportServiceImpl.getCreditReport(experianRequestDTO), HttpStatus.OK);
 	}
 
