@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.experian.credit.report.model.request.ExperianCreditReportRequestDTO;
 import com.experian.credit.report.model.response.ExperianCreditReportResponseDTO;
+import com.experian.credit.report.oath2.OAuth2Token;
 import com.experian.credit.report.oath2.User;
 import com.experian.credit.report.service.ExperianCreditReportService;
 
@@ -24,8 +25,8 @@ public class ExperianCreditReportController {
 		return "Hi There!!";
 	}
 
-	@PostMapping("/experian/oauth2")
-	public ResponseEntity<Object> getAuthenticationToken(@RequestBody User user) {
+	@GetMapping("/experian/oauth2")
+	public ResponseEntity<OAuth2Token> getAuthenticationToken(@RequestBody User user) {
 		return new ResponseEntity<>(experianCreditReportServiceImpl.getOath2Token(user), HttpStatus.OK);
 	}
 

@@ -24,10 +24,12 @@ public class ExperianConfig {
 	//@Value("${Oauth2AccesTokenUri}")
 	private String accessTokenUri;
 
-	// @Bean
+	@Bean
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
+	
+	
 
 	// @Bean
 	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
@@ -35,7 +37,7 @@ public class ExperianConfig {
 		return new OAuth2RestTemplate(details, oauth2ClientContext);
 	}
 
-	@Bean
+	//@Bean
 	public RestTemplate oAuthRestTemplate() {
 		ClientCredentialsResourceDetails resourceDetails = new ClientCredentialsResourceDetails();
 		resourceDetails.setId("1");
