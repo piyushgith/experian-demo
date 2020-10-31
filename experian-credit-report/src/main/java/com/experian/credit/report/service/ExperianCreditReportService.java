@@ -7,7 +7,7 @@ import com.experian.credit.report.oath2.User;
 
 public interface ExperianCreditReportService {
 
-	ExperianCreditReportResponseDTO getCreditReport(ExperianCreditReportRequestDTO experianRequestDTO);
+	ExperianCreditReportResponseDTO getCreditReport(ExperianCreditReportRequestDTO experianRequestDTO) throws Exception;
 
 	OAuth2Token getOath2Token(User user);
 }

@@ -31,7 +31,7 @@ public class ExperianCreditReportController {
 	}
 
 	@PostMapping("/experian/creditreport")
-	public ResponseEntity<ExperianCreditReportResponseDTO> getUserCreditReport(@RequestBody ExperianCreditReportRequestDTO experianRequestDTO) {
+	public ResponseEntity<ExperianCreditReportResponseDTO> getUserCreditReport(@RequestBody ExperianCreditReportRequestDTO experianRequestDTO) throws Exception {
 		return new ResponseEntity<>(experianCreditReportServiceImpl.getCreditReport(experianRequestDTO), HttpStatus.OK);
 	}
 

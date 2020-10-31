@@ -6,7 +6,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.experian.credit.report.model.request.ExperianCreditReportRequestDTO;
@@ -19,6 +21,9 @@ public class ExperianCreditReportServiceImpl implements ExperianCreditReportServ
 
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private OAuth2RestOperations oAuth2RestOperations;
 
 	@Override
 	public OAuth2Token getOath2Token(User user) {
@@ -33,22 +38,24 @@ public class ExperianCreditReportServiceImpl implements ExperianCreditReportServ
 	}
 
 	@Override
-	public ExperianCreditReportResponseDTO getCreditReport(ExperianCreditReportRequestDTO experianRequestDTO) {
-		User user = new User();
-		user.setUsername("justin.leibow@gotmail.com"); // fix email id
-		user.setPassword("Nexus4Insurance!"); // fix latest password
+	public ExperianCreditReportResponseDTO getCreditReport(ExperianCreditReportRequestDTO experianRequestDTO) throws Exception {
+		ResponseEntity<ExperianCreditReportResponseDTO> responseDTO = null;
 
-		OAuth2Token oAuth2Token = getOath2Token(user);
-		String authToken = "Bearer " + oAuth2Token.getAccess_token();
+		String authToken = "Bearer " + oAuth2RestOperations.getAccessToken();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("clientReferenceId", "SBMYSQL");
 		headers.set("Authorization", authToken);
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<ExperianCreditReportRequestDTO> entity = new HttpEntity<>(experianRequestDTO, headers);
-		ResponseEntity<ExperianCreditReportResponseDTO> responseDTO = restTemplate.exchange(
-				"https://sandbox-us-api.experian.com/consumerservices/credit-profile/v2/credit-report", HttpMethod.POST,
-				entity, ExperianCreditReportResponseDTO.class);
+
+		try {
+			responseDTO = restTemplate.exchange(
+					"https://sandbox-us-api.experian.com/consumerservices/credit-profile/v2/credit-report",HttpMethod.POST, entity, ExperianCreditReportResponseDTO.class);
+		} catch (HttpStatusCodeException ex) {
+			System.err.println("Error Code: " + ex.getResponseBodyAsString());
+			throw new Exception(ex.getResponseBodyAsString());
+		}
 		return responseDTO.getBody();
 	}
 }
